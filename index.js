@@ -6,13 +6,16 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 const fileupload = require("express-fileupload");
-app.use(fileupload());
+app.use(fileupload({
+    useTempFiles:true,
+    tempFileDir:'/temp'
+}));
 
 const Upload = require("./routes/FileUpload");
 app.use("/api/v1/upload", Upload);
 
 require("./config/database").dbConnect();
-
+require("./config/cloudinary").cloudinaryConnect();
 
 app.get("/",(req,res)=>{
     res.send(`<h1>This is homepage`);
